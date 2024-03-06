@@ -1,0 +1,20 @@
+<settings>
+    <setting propertyKey="@Properties.glasses_name" title="@Strings.settings_glasses_name">
+        <settingConfig type="alphaNumeric" />
+    </setting>
+    <setting propertyKey="@Properties.screens" title="@Strings.settings_screens">
+        <settingConfig type="alphaNumeric" />
+    </setting>
+    <setting propertyKey="@Properties.run" title="@Strings.settings_run">
+        <settingConfig type="alphaNumeric" />
+    </setting>
+    <setting propertyKey="@Properties.bike" title="@Strings.settings_bike">
+        <settingConfig type="alphaNumeric" />
+    </setting>
+    <setting propertyKey="@Properties.laps_per_interval" title="@Strings.laps_per_interval">
+        <settingConfig type="numeric" min="0" max="10" />
+    </setting>
+    <setting propertyKey="@Properties.lap_freeze_seconds" title="@Strings.lap_freeze_seconds">
+        <settingConfig type="numeric" min="0" max="30" />
+    </setting>
+</settings>
