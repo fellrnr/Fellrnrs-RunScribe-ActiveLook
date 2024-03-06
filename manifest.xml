@@ -49,6 +49,7 @@
             <iq:product id="venusq2m"/>
         </iq:products>
         <iq:permissions>
+            <iq:uses-permission id="Ant"/>
             <iq:uses-permission id="BluetoothLowEnergy"/>
         </iq:permissions>
         <iq:languages>

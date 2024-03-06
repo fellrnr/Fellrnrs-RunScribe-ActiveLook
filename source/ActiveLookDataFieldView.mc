@@ -255,9 +255,12 @@ class ActiveLookDataFieldView extends WatchUi.DataField {
     hidden var __heart_count = -3;
     hidden var __lastError = null;
 
+    var mSensorLeft; //#!JFS!#
+    var mSensorRight;
+
     private var canvas as DataFieldDrawable = new DataFieldDrawable();
 
-    function initialize() {
+    function initialize(sensorL, sensorR) { ////#!JFS!#
         DataField.initialize();
         $.resetGlobalsNext();
         $.sdk = new ActiveLookSDK.ALSDK(self);
@@ -265,6 +268,9 @@ class ActiveLookDataFieldView extends WatchUi.DataField {
         if(Toybox.AntPlus has :RunningDynamics) {
     		runningDynamics = new Toybox.AntPlus.RunningDynamics(null);
 		}
+
+        	mSensorLeft = sensorL;
+        	mSensorRight = sensorR;
     }
 
     function onLayout(dc) {
@@ -272,9 +278,25 @@ class ActiveLookDataFieldView extends WatchUi.DataField {
         return View.onLayout(dc);
     }
 
+    //#!JFS!#
+    function updateSensors(sensor) {
+        if (!sensor.isChannelOpen) {
+            sensor.openChannel();
+        }
+       
+        sensor.idleTime++; //the sensor decrements idleTime when receiving data
+        if (sensor.idleTime > 30) {
+            sensor.closeChannel();
+        }
+    }
+
+
     function compute(info) {
+		updateSensors(mSensorLeft); //#!JFS!#
+		updateSensors(mSensorRight);
+
         AugmentedActivityInfo.accumulate(info);
-        AugmentedActivityInfo.compute(info);
+        AugmentedActivityInfo.compute(info, mSensorLeft, mSensorRight);
         var rdd = null;
         if (runningDynamics != null) {
             rdd = runningDynamics.getRunningDynamics();

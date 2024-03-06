@@ -44,7 +44,24 @@ module ActiveLook {
         var __nbStepLength as Lang.Number = 0;
         var __totalStepLength as Lang.Number = 0;
         var averageStepLength as Lang.Float?;
+        
+        //#!JFS!#
         var strideLength as Lang.Float?;
+        var LeftImpact as Lang.Float?;
+        var LeftBraking as Lang.Float?;
+        var LeftFootstrike as Lang.Float?;
+        var LeftPronation as Lang.Float?;
+        var LeftFlightRatio as Lang.Float?;
+        var LeftContactTime as Lang.Float?;
+        var LeftPower as Lang.Float?;
+        var RightImpact as Lang.Float?;
+        var RightBraking as Lang.Float?;
+        var RightFootstrike as Lang.Float?;
+        var RightPronation as Lang.Float?;
+        var RightFlightRatio as Lang.Float?;
+        var RightContactTime as Lang.Float?;
+        var RightPower as Lang.Float?;
+//#!JFS!#
 
         var __asSamples as Lang.Array<Lang.Number> = [];
         var averageAscentSpeed as Lang.Float?;
@@ -70,7 +87,23 @@ module ActiveLook {
             __nbStepLength = 0;
             __totalStepLength = 0;
             averageStepLength = null;
+            //#!JFS!#
             strideLength = null;
+LeftImpact = null;
+LeftBraking = null;
+LeftFootstrike = null;
+LeftPronation = null;
+LeftFlightRatio = null;
+LeftContactTime = null;
+LeftPower = null;
+RightImpact = null;
+RightBraking = null;
+RightFootstrike = null;
+RightPronation = null;
+RightFlightRatio = null;
+RightContactTime = null;
+RightPower = null;
+
             __asSamples = [];
             averageAscentSpeed = null;
             ActiveLook.Laps.onSessionStart();
@@ -158,7 +191,7 @@ module ActiveLook {
             }
         }
 
-        function compute(info as Activity.Info?) as Void {
+        function compute(info as Activity.Info?, mSensorLeft, mSensorRight) as Void {
             __ai = info;
 
             // Chrono
@@ -217,6 +250,22 @@ module ActiveLook {
             } else {
                 strideLength = (info.currentSpeed * 60) / info.currentCadence * 1000; //this DF code expects it in mm
             }
+
+LeftImpact = mSensorLeft.Impact;
+LeftBraking = mSensorLeft.Braking;
+LeftFootstrike = mSensorLeft.Footstrike;
+LeftPronation = mSensorLeft.Pronation;
+LeftFlightRatio = mSensorLeft.FlightRatio;
+LeftContactTime = mSensorLeft.ContactTime;
+LeftPower = mSensorLeft.Power;
+RightImpact = mSensorRight.Impact;
+RightBraking = mSensorRight.Braking;
+RightFootstrike = mSensorRight.Footstrike;
+RightPronation = mSensorRight.Pronation;
+RightFlightRatio = mSensorRight.FlightRatio;
+RightContactTime = mSensorRight.ContactTime;
+RightPower = mSensorRight.Power;
+         
             
         }
 
@@ -242,6 +291,7 @@ module ActiveLook {
             [        :chrono,  :elapsedDistance,     :currentPace,      :totalAscent, :altitude ],
         ];
 
+        ////#!JFS!# This is how fields get their numbers!
         //The numbers used in the page layouts are offsets to these fields
         //https://help.activelook.net/en/articles/7185487-garmin-data-fields-for-use-with-activelook
         const LAYOUTS as Lang.Array<Lang.Symbol> = [
@@ -264,6 +314,21 @@ module ActiveLook {
             :lapCalories,
             :lapAverageGroundContactTime, :lapAverageVerticalOscillation, :lapAverageStepLength,
             :strideLength, //#!JFS!# Add stride length, number 47
+:LeftImpact, //48
+:LeftBraking, //49
+:LeftFootstrike, //50
+:LeftPronation, //51
+:LeftFlightRatio, //52
+:LeftContactTime, //53
+:LeftPower, //54
+:RightImpact, //55
+:RightBraking, //56
+:RightFootstrike, //57
+:RightPronation, //58
+:RightFlightRatio, //59
+:RightContactTime, //60
+:RightPower, //61
+
         ];
 
         //ToDo : A modifier avec les bonnes positions
@@ -399,9 +464,24 @@ module ActiveLook {
             :lapChrono                   => 0x0B0B2B2B,
             :lapAverageHeartRate         => 0x18183434,
             :lapAveragePower             => 0x19193535,
-            :lapAverageCadence           => 0x17173333,
-            :lapCalories                 => 0x11113636,
-            :lapAverageGroundContactTime => 0xBDBDBEBE,
+            :lapAverageCadence           => 0x17173333, //39
+            :lapCalories                 => 0x11113636, //43
+            :lapAverageGroundContactTime => 0xBDBDBEBE, ////#!JFS!# this is number 44
+:LeftImpact => 0x1A273939, 
+:LeftBraking => 0x68696A6A, 
+:LeftFootstrike => 0x14283B3B, 
+:LeftPronation => 0x1C1C3C3C, 
+:LeftFlightRatio => 0xBDBDBEBE, 
+:LeftContactTime => 0xBDBDBEBE, 
+:LeftPower => 0x19193535, 
+:RightImpact => 0x1A273939, 
+:RightBraking => 0x68696A6A, 
+:RightFootstrike => 0x14283B3B, 
+:RightPronation => 0x1C1C3C3C, 
+:RightFlightRatio => 0xBDBDBEBE, 
+:RightContactTime => 0xBDBDBEBE, 
+:RightPower => 0x19193535, 
+
         };
 
         /*
@@ -490,11 +570,11 @@ module ActiveLook {
             :lapAverageSpeed       => { :id => 0x0E222D2D, :statuteSwitch => :paceUnits,      :toMetric => 3.6,    :toStatute => 2.236936    },
             :lapAveragePace        => { :id => 0x42434444, :statuteSwitch => :paceUnits,      :toMetric => 1000.0, :toStatute => 1609.344    },
             :lapTotalAscent        => { :id => 0x13242F2F, :statuteSwitch => :elevationUnits,                      :toStatute => 3.28084     },
-            :lapTotalDescent       => { :id => 0x1A273939, :statuteSwitch => :elevationUnits,                      :toStatute => 3.28084     },
-            :lapAverageAscentSpeed => { :id => 0x14283B3B, :statuteSwitch => :paceUnits,      :toMetric => 3600.0, :toStatute => 11811.024   },
-            :lapAverageVerticalOscillation => { :id => 0xC8C9CACA, :statuteSwitch => :heightUnits, :toMetric => 0.1,   :toStatute => 0.0393701  },
-            :lapAverageStepLength          => { :id => 0xC2C3C4C4, :statuteSwitch => :heightUnits, :toMetric => 0.001, :toStatute => 0.00328084 },
-            :strideLength                 => { :id => 0xC2C3C4C4, :statuteSwitch => :heightUnits, :toMetric => 0.001, :toStatute => 0.00328084 }, //#!JFS!# hopefully the id will be okay. 
+            :lapTotalDescent       => { :id => 0x1A273939, :statuteSwitch => :elevationUnits,                      :toStatute => 3.28084     }, //23
+            :lapAverageAscentSpeed => { :id => 0x14283B3B, :statuteSwitch => :paceUnits,      :toMetric => 3600.0, :toStatute => 11811.024   }, //43
+            :lapAverageVerticalOscillation => { :id => 0xC8C9CACA, :statuteSwitch => :heightUnits, :toMetric => 0.1,   :toStatute => 0.0393701  }, //45
+            :lapAverageStepLength          => { :id => 0xC2C3C4C4, :statuteSwitch => :heightUnits, :toMetric => 0.001, :toStatute => 0.00328084 }, //46
+            :strideLength                 => { :id => 0xC2C3C4C4, :statuteSwitch => :heightUnits, :toMetric => 0.001, :toStatute => 0.00328084 }, //#!JFS!# the id matches the icon. This is 47, based on the order in const LAYOUTS as Lang.Array<Lang.Symbol> = [
         };
 
         const CUSTOM_TO_STR as Lang.Dictionary<Lang.Symbol, {

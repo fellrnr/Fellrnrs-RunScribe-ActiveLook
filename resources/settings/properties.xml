@@ -1,7 +1,7 @@
 <properties>
     <property id="glasses_name" type="string"></property>
-    <property id="screens" type="string">(33,34,7,4,15,18)</property>
-    <property id="run" type="string">(47,34,7,4,15,18),(33,34,7,4,15,18)</property>
+    <property id="screens" type="string">(48,55,49,56,50,57)(51,58,52,59,53,60)</property>
+    <property id="run" type="string">(48,55,49,56,50,57)(51,58,52,59,53,60)</property>
     <property id="bike" type="string">(1,2,4)(12,18)(6,14,20,24)(5,13,19,22)(0)</property>
   	<property id="laps_per_interval" type="number">2</property>
   	<property id="lap_freeze_seconds" type="number">4</property>
