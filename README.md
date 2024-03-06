@@ -1,3 +1,3 @@
 # Fellrnr's modified ActiveLook DataField 
 
-This is a modification of the ActiveLook DataField. I've added the configuration of the number of laps per interval, then shown the interval and recovery numbers rather than lap numbers. That's easier if you're doing large numbers of intervals. I've also replaced the time in the top left with the interval/recovery number. I added stride length based on pace and cadence to the available fields. The time the screen is frozen after a lap button press is now configurable (it was too long for very short intervals.)
+This is a further modification of the ActiveLook DataField. It's based on fellrnr/Fellrnrs-DataField-ActiveLook, but adds support for RunScribe pods
